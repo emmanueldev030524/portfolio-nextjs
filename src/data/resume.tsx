@@ -34,7 +34,7 @@ export const DATA = {
   location: "Manolo Fortich, Bukidnon",
   locationLink: "https://www.google.com/maps/place/Manolo+Fortich,+Bukidnon",
   description:
-    "WordPress Developer & Automation Specialist. I help businesses streamline their processes through development, CRM integration, and workflow automation.",
+    "I help businesses build high-performing WordPress websites and streamline operations by leveraging modern front-end development, AI-powered automation, and CRM integrations.",
   summary:
     "With 8+ years in web development and automation, I specialize in building custom [WordPress](https://wordpress.org) solutions and streamlining business workflows that save clients real time and money. I've partnered with companies like [DrTalks](https://drtalks.com) and [BoxOut Marketing](https://boxoutmarketing.com), delivering everything from CRM integrations to full marketing automation systems. Based in the Philippines, I work with clients worldwide.",
   avatarUrl: "/me.png",

@@ -10,7 +10,7 @@ import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
 import SkillsSection from "@/components/section/skills-section";
 import { ArrowUpRight } from "lucide-react";
-import { FlippingImage } from "@/components/flipping-image";
+import { PixelatedCanvas } from "@/components/ui/pixelated-canvas";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 
 const BLUR_FADE_DELAY = 0.04;
@@ -36,11 +36,31 @@ export default function Page() {
               />
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2 p-4">
-              <FlippingImage
-                src={DATA.avatarUrl}
-                alt={DATA.name}
-                className="size-40 md:size-48"
-              />
+              <div className="size-48 md:size-56 rounded-full overflow-hidden shadow-2xl ring-4 ring-muted">
+                <PixelatedCanvas
+                  src={DATA.avatarUrl}
+                  width={224}
+                  height={224}
+                  cellSize={3}
+                  dotScale={0.85}
+                  shape="circle"
+                  backgroundColor="#000000"
+                  dropoutStrength={0}
+                  interactive
+                  distortionMode="repel"
+                  distortionStrength={3}
+                  distortionRadius={60}
+                  followSpeed={0.2}
+                  jitterStrength={2}
+                  jitterSpeed={3}
+                  tintStrength={0}
+                  fadeOnLeave
+                  fadeSpeed={0.08}
+                  objectFit="cover"
+                  objectPositionY={0.4}
+                  zoom={1.8}
+                />
+              </div>
             </BlurFade>
           </div>
         </div>
@@ -51,35 +71,43 @@ export default function Page() {
             <h2 className="text-2xl font-bold font-heading">About</h2>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 4}>
-            <p className="text-lg max-w-full text-pretty font-sans leading-relaxed text-muted-foreground">
-              With{" "}
-              <Highlighter action="underline" color="#22d3ee">
-                <span className="font-semibold text-foreground">8+ years</span>
-              </Highlighter>{" "}
-              in web development and automation, I specialize in building custom{" "}
-              <Highlighter action="underline" color="#22d3ee">
-                <a href="https://wordpress.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
-                  WordPress
+            <div className="text-lg max-w-full text-pretty font-sans leading-relaxed text-muted-foreground space-y-4">
+              <p>
+                With over{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">8 years</span>
+                </Highlighter>{" "}
+                of experience in web development and automation, I specialize in front-end{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <a href="https://wordpress.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                    WordPress
+                  </a>
+                </Highlighter>{" "}
+                development, creating fast, user-friendly, and visually engaging websites. I also design automation systems that simplify business processes, saving clients time and operational costs.
+              </p>
+              <p>
+                I&apos;ve collaborated with companies such as{" "}
+                <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                  DrTalks
+                </a>{" "}
+                and{" "}
+                <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                  BoxOut Marketing
                 </a>
-              </Highlighter>{" "}
-              solutions and streamlining business workflows that save clients real time and money. I&apos;ve partnered with companies like{" "}
-              <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
-                DrTalks
-              </a>{" "}
-              and{" "}
-              <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
-                BoxOut Marketing
-              </a>
-              , delivering everything from{" "}
-              <Highlighter action="underline" color="#22d3ee">
-                <span className="font-semibold text-foreground">CRM integrations</span>
-              </Highlighter>{" "}
-              to full{" "}
-              <Highlighter action="underline" color="#22d3ee">
-                <span className="font-semibold text-foreground">marketing automation</span>
-              </Highlighter>{" "}
-              systems. Based in the Philippines, I work with clients worldwide.
-            </p>
+                , delivering solutions ranging from custom WordPress builds and{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">CRM integrations</span>
+                </Highlighter>{" "}
+                to full{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">marketing automation</span>
+                </Highlighter>{" "}
+                workflows.
+              </p>
+              <p>
+                Based in the Philippines, I work with clients worldwide to build scalable websites and efficient digital systems that support business growth.
+              </p>
+            </div>
           </BlurFade>
         </div>
       </section>
