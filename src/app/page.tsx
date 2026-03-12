@@ -3,7 +3,7 @@ import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { DATA } from "@/data/resume";
 import Image from "next/image";
 import Link from "next/link";
-import Markdown from "react-markdown";
+import { Highlighter } from "@/components/magicui/highlighter";
 import ContactSection from "@/components/section/contact-section";
 import ServicesSection from "@/components/section/services-section";
 import ProjectsSection from "@/components/section/projects-section";
@@ -17,7 +17,7 @@ const BLUR_FADE_DELAY = 0.04;
 export default function Page() {
   return (
     <main className="min-h-dvh flex flex-col gap-16 relative">
-      <section id="hero" className="mb-4">
+      <section id="hero">
         <div className="mx-auto w-full space-y-8">
           <div className="gap-10 flex flex-col md:flex-row justify-between items-center">
             <div className="gap-2 flex flex-col order-2 md:order-1">
@@ -49,11 +49,35 @@ export default function Page() {
             <h2 className="text-2xl font-bold font-heading">About</h2>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 4}>
-            <div className="prose prose-lg max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
-              <Markdown>
-                {DATA.summary}
-              </Markdown>
-            </div>
+            <p className="text-lg max-w-full text-pretty font-sans leading-relaxed text-muted-foreground">
+              With{" "}
+              <Highlighter action="underline" color="#22d3ee">
+                <span className="font-semibold text-foreground">8+ years</span>
+              </Highlighter>{" "}
+              in web development and automation, I specialize in building custom{" "}
+              <Highlighter action="underline" color="#22d3ee">
+                <a href="https://wordpress.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                  WordPress
+                </a>
+              </Highlighter>{" "}
+              solutions and streamlining business workflows that save clients real time and money. I&apos;ve partnered with companies like{" "}
+              <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                DrTalks
+              </a>{" "}
+              and{" "}
+              <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                BoxOut Marketing
+              </a>
+              , delivering everything from{" "}
+              <Highlighter action="underline" color="#22d3ee">
+                <span className="font-semibold text-foreground">CRM integrations</span>
+              </Highlighter>{" "}
+              to full{" "}
+              <Highlighter action="underline" color="#22d3ee">
+                <span className="font-semibold text-foreground">marketing automation</span>
+              </Highlighter>{" "}
+              systems. Based in the Philippines, I work with clients worldwide.
+            </p>
           </BlurFade>
         </div>
       </section>
@@ -82,34 +106,32 @@ export default function Page() {
                   href={education.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-x-3 justify-between group pl-3"
+                  className="flex items-start gap-x-4 group"
                 >
-                  <div className="flex items-center gap-x-3 flex-1 min-w-0">
-                    {education.logoUrl ? (
-                      <Image
-                        src={education.logoUrl}
-                        alt={education.school}
-                        width={56}
-                        height={56}
-                        className="size-14 p-0.5 border border-border/40 rounded-full shadow overflow-hidden object-contain flex-none bg-white dark:bg-white/90"
-                      />
-                    ) : (
-                      <div className="size-10 md:size-12 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
-                    )}
-                    <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                      <div className="text-lg font-semibold leading-none flex items-center gap-2">
+                  {education.logoUrl ? (
+                    <Image
+                      src={education.logoUrl}
+                      alt={education.school}
+                      width={56}
+                      height={56}
+                      className="size-12 md:size-14 p-0.5 border border-border/40 rounded-full shadow overflow-hidden object-contain flex-none bg-white dark:bg-white/90 mt-0.5"
+                    />
+                  ) : (
+                    <div className="size-12 md:size-14 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none mt-0.5" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between gap-x-4">
+                      <h3 className="text-base md:text-lg font-semibold leading-snug flex items-center gap-2">
                         {education.school}
-                        <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-200" aria-hidden />
-                      </div>
-                      <div className="font-sans text-base text-muted-foreground">
-                        {education.degree}
-                      </div>
+                        <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-200 flex-none" aria-hidden />
+                      </h3>
+                      <span className="text-xs tabular-nums text-muted-foreground whitespace-nowrap flex-none">
+                        {education.start} - {education.end}
+                      </span>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-                    <span>
-                      {education.start} - {education.end}
-                    </span>
+                    <p className="font-sans text-sm md:text-base text-muted-foreground mt-0.5">
+                      {education.degree}
+                    </p>
                   </div>
                 </Link>
               </BlurFade>

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { DATA } from "@/data/resume";
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function CompanyLogo({ src, alt }: { src: string; alt: string }) {
@@ -12,14 +12,14 @@ function CompanyLogo({ src, alt }: { src: string; alt: string }) {
 
   if (!src || error) {
     return (
-      <div className="flex size-10 items-center justify-center rounded-full bg-muted text-xs font-bold text-white">
+      <div className="flex size-12 items-center justify-center rounded-full bg-muted text-xs font-bold text-white">
         {alt.charAt(0)}
       </div>
     );
   }
 
   return (
-    <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-border/40 bg-white dark:bg-white/90 p-0.5">
+    <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-border/40 bg-white dark:bg-white/90 p-0.5">
       <Image
         src={src}
         alt={alt}
@@ -34,14 +34,36 @@ function CompanyLogo({ src, alt }: { src: string; alt: string }) {
 
 export default function WorkSection() {
   const [active, setActive] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const activeWork = DATA.work[active];
   const totalTabs = DATA.work.length;
   const beamPercent = ((active + 1) / totalTabs) * 100;
 
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 150, behavior: "smooth" });
+  };
+
   return (
     <div className="relative flex flex-col gap-6 md:flex-row md:gap-16">
       {/* Left: Company tabs */}
-      <div className="relative flex flex-row gap-1 md:flex-col md:gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0 md:shrink-0">
+      <div className="relative md:contents">
+        {/* Scroll fade + arrow hint — mobile only */}
+        <div className="absolute right-0 top-0 bottom-2 w-16 bg-gradient-to-l from-background via-background/80 to-transparent z-10 md:hidden flex items-center justify-end pr-1">
+          <button
+            onClick={scrollRight}
+            className="p-1"
+            aria-label="Scroll to see more"
+          >
+            <motion.div
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="text-muted-foreground"
+            >
+              <ChevronRight className="size-5" />
+            </motion.div>
+          </button>
+        </div>
+      <div ref={scrollRef} className="relative flex flex-row gap-1 md:flex-col md:gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0 md:shrink-0 scrollbar-none">
         {/* Beam — scoped to tab list height */}
         <div className="absolute left-[2.5rem] top-0 bottom-0 w-[2px] hidden md:block">
           <div className="absolute inset-0 bg-border/10 rounded-full" />
@@ -75,6 +97,7 @@ export default function WorkSection() {
             </span>
           </button>
         ))}
+      </div>
       </div>
 
       {/* Right: Details panel */}

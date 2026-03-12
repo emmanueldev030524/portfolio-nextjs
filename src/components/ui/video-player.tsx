@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2, Volume1, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -65,6 +65,18 @@ const VideoPlayer = ({
   const [showControls, setShowControls] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isTouchDevice = useRef(false);
+
+  useEffect(() => {
+    isTouchDevice.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    return () => { if (hideTimer.current) clearTimeout(hideTimer.current); };
+  }, []);
+
+  const startHideTimer = useCallback(() => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => setShowControls(false), 2000);
+  }, []);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -74,6 +86,19 @@ const VideoPlayer = ({
         videoRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleVideoClick = () => {
+    if (isTouchDevice.current) {
+      // Mobile: toggle controls, auto-hide after 2s when showing
+      setShowControls((prev) => {
+        if (hideTimer.current) clearTimeout(hideTimer.current);
+        if (!prev) startHideTimer();
+        return !prev;
+      });
+    } else {
+      togglePlay();
     }
   };
 
@@ -129,15 +154,15 @@ const VideoPlayer = ({
   return (
     <motion.div
       className="relative w-full rounded-xl overflow-hidden bg-[#11111198] shadow-[0_0_20px_rgba(0,0,0,0.2)] backdrop-blur-sm"
-      onMouseEnter={() => setShowControls(true)}
-      onMouseLeave={() => setShowControls(false)}
+      onMouseEnter={() => { if (!isTouchDevice.current) { setShowControls(true); startHideTimer(); } }}
+      onMouseLeave={() => { if (!isTouchDevice.current) setShowControls(false); }}
     >
       <video
         ref={videoRef}
         className="w-full aspect-video object-contain cursor-pointer"
         onTimeUpdate={handleTimeUpdate}
         src={src}
-        onClick={togglePlay}
+        onClick={handleVideoClick}
         autoPlay={autoPlay}
         loop={loop}
         muted={initialMuted}
@@ -147,7 +172,8 @@ const VideoPlayer = ({
       <AnimatePresence>
         {showControls && (
           <motion.div
-            className="absolute bottom-0 mx-auto max-w-xl left-0 right-0 p-4 m-2 bg-[#11111198] backdrop-blur-md rounded-2xl"
+            className="absolute bottom-0 mx-auto max-w-xl left-0 right-0 p-2 sm:p-4 m-2 bg-[#11111198] backdrop-blur-md rounded-2xl"
+            onClick={(e) => e.stopPropagation()}
             initial={{ y: 20, opacity: 0, filter: "blur(10px)" }}
             animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
             exit={{ y: 20, opacity: 0, filter: "blur(10px)" }}
@@ -186,37 +212,35 @@ const VideoPlayer = ({
                     )}
                   </Button>
                 </motion.div>
-                <div className="flex items-center gap-x-1">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button
+                    onClick={toggleMute}
+                    variant="ghost"
+                    size="icon"
+                    className="text-white hover:bg-[#111111d1] hover:text-white"
                   >
-                    <Button
-                      onClick={toggleMute}
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-[#111111d1] hover:text-white"
-                    >
-                      {isMuted ? (
-                        <VolumeX className="h-5 w-5" />
-                      ) : volume > 0.5 ? (
-                        <Volume2 className="h-5 w-5" />
-                      ) : (
-                        <Volume1 className="h-5 w-5" />
-                      )}
-                    </Button>
-                  </motion.div>
+                    {isMuted ? (
+                      <VolumeX className="h-5 w-5" />
+                    ) : volume > 0.5 ? (
+                      <Volume2 className="h-5 w-5" />
+                    ) : (
+                      <Volume1 className="h-5 w-5" />
+                    )}
+                  </Button>
+                </motion.div>
 
-                  <div className="w-24">
-                    <CustomSlider
-                      value={volume * 100}
-                      onChange={handleVolumeChange}
-                    />
-                  </div>
+                <div className="hidden sm:block w-24">
+                  <CustomSlider
+                    value={volume * 100}
+                    onChange={handleVolumeChange}
+                  />
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5 sm:gap-2">
                 {[0.5, 1, 1.5, 2].map((speed) => (
                   <motion.div
                     whileHover={{ scale: 1.1 }}
@@ -228,7 +252,7 @@ const VideoPlayer = ({
                       variant="ghost"
                       size="icon"
                       className={cn(
-                        "text-white hover:bg-[#111111d1] hover:text-white",
+                        "text-white hover:bg-[#111111d1] hover:text-white text-xs sm:text-sm size-8 sm:size-10",
                         playbackSpeed === speed && "bg-[#111111d1]"
                       )}
                     >
