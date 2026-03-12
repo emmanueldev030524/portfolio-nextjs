@@ -99,13 +99,21 @@ export function ContactForm() {
 
     setStatus("submitting");
 
-    const data = new FormData(form);
-    data.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "");
+    const formData = new FormData(form);
+    const data = {
+      access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "",
+      firstname: formData.get("firstname"),
+      lastname: formData.get("lastname"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+      botcheck: formData.get("botcheck"),
+    };
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: data,
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
       });
       const json = await res.json();
 
@@ -113,9 +121,11 @@ export function ContactForm() {
         setStatus("success");
         form.reset();
       } else {
+        console.error("Web3Forms error:", json.message);
         setStatus("error");
       }
-    } catch {
+    } catch (err) {
+      console.error("Contact form submission failed:", err);
       setStatus("error");
     }
   }
