@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { Mail, Phone } from "lucide-react";
 import { DATA } from "@/data/resume";
+import { ContactForm } from "@/components/contact-form";
 
 export default function ContactSection() {
   return (
@@ -26,8 +27,14 @@ export default function ContactSection() {
         </h2>
         <p className="mx-auto max-w-lg text-lg text-muted-foreground text-balance">
           Have a project in mind or need help automating your workflows?
-          Reach out and I&apos;ll get back to you as soon as possible.
+          Fill out the form below and I&apos;ll get back to you within 24 hours.
         </p>
+        <ContactForm />
+        <div className="flex items-center gap-3 w-full max-w-md">
+          <div className="flex-1 h-px bg-border" />
+          <span className="text-xs text-muted-foreground/60">or reach out directly</span>
+          <div className="flex-1 h-px bg-border" />
+        </div>
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Link
             href={`mailto:${DATA.contact.email}`}

@@ -21,13 +21,15 @@ export default function Footer() {
         <p className="text-xs text-muted-foreground/60">
           Built with modern, production-grade tools
         </p>
-        <div className="flex items-center gap-6 flex-wrap justify-center">
-          {TECH_STACK.map((tech) => (
-            <div key={tech.name} className="flex flex-col items-center gap-1.5">
-              <tech.icon className="size-6" />
-              <span className="text-[10px] text-muted-foreground">{tech.name}</span>
-            </div>
-          ))}
+        <div className="rounded-xl border border-border/30 bg-card/30 px-8 py-4">
+          <div className="flex items-center gap-5 flex-wrap justify-center">
+            {TECH_STACK.map((tech) => (
+              <div key={tech.name} className="flex flex-col items-center gap-1.5">
+                <tech.icon className="size-6" />
+                <span className="text-[10px] text-muted-foreground whitespace-nowrap">{tech.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

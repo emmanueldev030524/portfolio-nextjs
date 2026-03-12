@@ -16,6 +16,12 @@ import { ArrowUp } from "lucide-react";
 
 const SCROLL_THRESHOLD = 300;
 
+const DOCK_ICON_CLASS =
+  "rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors";
+
+const TOOLTIP_CONTENT_CLASS =
+  "rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]";
+
 export default function Navbar() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { scrollY } = useScroll();
@@ -37,7 +43,7 @@ export default function Navbar() {
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
                 >
-                  <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <DockIcon className={DOCK_ICON_CLASS}>
                     <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
                   </DockIcon>
                 </a>
@@ -45,7 +51,7 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                className={TOOLTIP_CONTENT_CLASS}
               >
                 <p>{item.label}</p>
                 <TooltipArrow className="fill-primary" />
@@ -70,7 +76,7 @@ export default function Navbar() {
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
                   >
-                    <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                    <DockIcon className={DOCK_ICON_CLASS}>
                       <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
                     </DockIcon>
                   </a>
@@ -78,7 +84,7 @@ export default function Navbar() {
                 <TooltipContent
                   side="top"
                   sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                  className={TOOLTIP_CONTENT_CLASS}
                 >
                   <p>{name}</p>
                   <TooltipArrow className="fill-primary" />
@@ -92,16 +98,18 @@ export default function Navbar() {
         />
         <Tooltip>
           <TooltipTrigger asChild>
-            <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-              <AnimatedThemeToggler className="size-full cursor-pointer flex items-center justify-center" />
-            </DockIcon>
+            <span>
+              <DockIcon className={DOCK_ICON_CLASS}>
+                <AnimatedThemeToggler className="size-full cursor-pointer flex items-center justify-center" />
+              </DockIcon>
+            </span>
           </TooltipTrigger>
           <TooltipContent
             side="top"
             sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+            className={TOOLTIP_CONTENT_CLASS}
           >
-            <p>Theme</p>
+            <p><span className="dark:hidden">Dark mode</span><span className="hidden dark:inline">Light mode</span></p>
             <TooltipArrow className="fill-primary" />
           </TooltipContent>
         </Tooltip>
@@ -119,7 +127,7 @@ export default function Navbar() {
                   <button
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                   >
-                    <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                    <DockIcon className={DOCK_ICON_CLASS}>
                       <ArrowUp className="size-full rounded-sm overflow-hidden object-contain" />
                     </DockIcon>
                   </button>
@@ -127,7 +135,7 @@ export default function Navbar() {
                 <TooltipContent
                   side="top"
                   sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                  className={TOOLTIP_CONTENT_CLASS}
                 >
                   <p>Back to top</p>
                   <TooltipArrow className="fill-primary" />

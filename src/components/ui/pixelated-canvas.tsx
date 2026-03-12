@@ -42,6 +42,8 @@ type PixelatedCanvasProps = {
   maxFps?: number;
   /** Object-fit behavior for the source image within the canvas. */
   objectFit?: "cover" | "contain" | "fill" | "none";
+  /** Horizontal position of the image (0 = left, 0.5 = center, 1 = right). Only applies with objectFit "cover". */
+  objectPositionX?: number;
   /** Vertical position of the image (0 = top, 0.5 = center, 1 = bottom). Only applies with objectFit "cover". */
   objectPositionY?: number;
   /** Zoom factor applied on top of objectFit (1 = no zoom, 1.5 = 50% zoom in). */
@@ -79,6 +81,7 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
   tintStrength = 0.2,
   maxFps = 60,
   objectFit = "cover",
+  objectPositionX = 0.5,
   objectPositionY = 0.5,
   zoom = 1,
   jitterStrength = 4,
@@ -182,7 +185,7 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
         const scale = Math.max(displayWidth / iw, displayHeight / ih) * zoom;
         dw = Math.ceil(iw * scale);
         dh = Math.ceil(ih * scale);
-        dx = Math.floor((displayWidth - dw) / 2);
+        dx = Math.floor((displayWidth - dw) * objectPositionX);
         dy = Math.floor((displayHeight - dh) * objectPositionY);
       } else if (objectFit === "contain") {
         const scale = Math.min(displayWidth / iw, displayHeight / ih);
@@ -587,6 +590,7 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
     tintStrength,
     maxFps,
     objectFit,
+    objectPositionX,
     objectPositionY,
     zoom,
     jitterStrength,

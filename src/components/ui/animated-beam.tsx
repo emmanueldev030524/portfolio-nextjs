@@ -1,7 +1,7 @@
 "use client"
 
-import { RefObject, useEffect, useId, useState } from "react"
-import { motion } from "motion/react"
+import { RefObject, useEffect, useId, useRef, useState } from "react"
+import { motion, useInView } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -45,6 +45,8 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   endYOffset = 0,
 }) => {
   const id = useId()
+  const svgRef = useRef<SVGSVGElement>(null)
+  const isInView = useInView(svgRef, { margin: "0px 0px -50px 0px" })
   const [pathD, setPathD] = useState("")
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 })
 
@@ -121,6 +123,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
 
   return (
     <svg
+      ref={svgRef}
       fill="none"
       width={svgDimensions.width}
       height={svgDimensions.height}
@@ -156,16 +159,16 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
             y1: "0%",
             y2: "0%",
           }}
-          animate={{
+          animate={isInView ? {
             x1: gradientCoordinates.x1,
             x2: gradientCoordinates.x2,
             y1: gradientCoordinates.y1,
             y2: gradientCoordinates.y2,
-          }}
+          } : undefined}
           transition={{
             delay,
             duration,
-            ease: [0.16, 1, 0.3, 1], // https://easings.net/#easeOutExpo
+            ease: [0.16, 1, 0.3, 1],
             repeat: Infinity,
             repeatDelay: 0,
           }}

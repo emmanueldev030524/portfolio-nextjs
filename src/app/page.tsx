@@ -10,7 +10,7 @@ import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
 import SkillsSection from "@/components/section/skills-section";
 import { ArrowUpRight } from "lucide-react";
-import { PixelatedCanvas } from "@/components/ui/pixelated-canvas";
+import { HeroAvatar } from "@/components/hero-avatar";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 
 const BLUR_FADE_DELAY = 0.04;
@@ -37,30 +37,7 @@ export default function Page() {
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2 p-4">
               <div className="size-48 md:size-56 rounded-full overflow-hidden shadow-2xl ring-4 ring-muted">
-                <PixelatedCanvas
-                  src={DATA.avatarUrl}
-                  width={224}
-                  height={224}
-                  cellSize={3}
-                  dotScale={0.85}
-                  shape="circle"
-                  backgroundColor="#000000"
-                  backgroundColorLight="#1a1a1a"
-                  dropoutStrength={0}
-                  interactive
-                  distortionMode="repel"
-                  distortionStrength={3}
-                  distortionRadius={60}
-                  followSpeed={0.2}
-                  jitterStrength={2}
-                  jitterSpeed={3}
-                  tintStrength={0}
-                  fadeOnLeave
-                  fadeSpeed={0.08}
-                  objectFit="cover"
-                  objectPositionY={0.4}
-                  zoom={1.8}
-                />
+                <HeroAvatar />
               </div>
             </BlurFade>
           </div>

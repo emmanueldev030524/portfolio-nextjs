@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 
 export interface FocusCard {
   title: string;
@@ -21,10 +22,18 @@ function Card({
   hovered: number | null;
   setHovered: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
+  function handleClick() {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
     <motion.div
       onMouseEnter={() => setHovered(index)}
       onMouseLeave={() => setHovered(null)}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}
       className={cn(
         "relative rounded-xl overflow-hidden border border-border/50 bg-card p-7 flex flex-col gap-5 cursor-pointer transition-[opacity,border-color,box-shadow] duration-300",
         hovered !== null && hovered !== index && "opacity-50",
@@ -51,6 +60,12 @@ function Card({
       <p className="relative z-10 text-sm text-muted-foreground leading-relaxed">
         {card.description}
       </p>
+      <span className={cn(
+        "relative z-10 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground/60 transition-colors duration-300 mt-auto",
+        hovered === index && "text-foreground"
+      )}>
+        Get Started <ArrowRight className="size-3" />
+      </span>
     </motion.div>
   );
 }

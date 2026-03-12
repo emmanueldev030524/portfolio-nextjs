@@ -2,10 +2,10 @@
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight, FolderOpen } from "lucide-react";
+import { ArrowUpRight, FolderOpen, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Markdown from "react-markdown";
 import dynamic from "next/dynamic";
@@ -45,22 +45,38 @@ function ProjectImageFallback() {
   );
 }
 
+function MediaSkeleton() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+      <FolderOpen className="size-8 text-muted-foreground/20" />
+    </div>
+  );
+}
+
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const [imageError, setImageError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   if (!src || imageError) {
     return <ProjectImageFallback />;
   }
 
   return (
-    <Image
-      src={src}
-      alt={alt}
-      width={600}
-      height={192}
-      className="w-full h-48 object-cover"
-      onError={() => setImageError(true)}
-    />
+    <div className="relative w-full h-48">
+      {!loaded && <MediaSkeleton />}
+      <Image
+        src={src}
+        alt={alt}
+        width={600}
+        height={192}
+        className={cn(
+          "w-full h-48 object-cover transition-opacity duration-300",
+          loaded ? "opacity-100" : "opacity-0"
+        )}
+        onLoad={() => setLoaded(true)}
+        onError={() => setImageError(true)}
+      />
+    </div>
   );
 }
 
@@ -81,6 +97,71 @@ interface Props {
   className?: string;
 }
 
+function LazyVideo({
+  src,
+  videoLoaded,
+  onPlaying,
+  onClick,
+}: {
+  src: string;
+  videoLoaded: boolean;
+  onPlaying: () => void;
+  onClick: () => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (inView && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [inView]);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {!videoLoaded && <MediaSkeleton />}
+      {inView && (
+        <video
+          ref={videoRef}
+          src={src}
+          loop
+          muted
+          playsInline
+          preload="none"
+          className={cn(
+            "w-full aspect-video object-contain cursor-pointer transition-opacity duration-300",
+            videoLoaded ? "opacity-100" : "opacity-0"
+          )}
+          onPlaying={onPlaying}
+          onClick={onClick}
+        />
+      )}
+      {!inView && <div className="w-full aspect-video" />}
+      {videoLoaded && (
+        <button
+          onClick={onClick}
+          className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg bg-black/70 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white hover:bg-black/90 transition-colors"
+        >
+          <Play className="size-3 fill-current" />
+          Watch Demo
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function ProjectCard({
   title,
   href,
@@ -94,6 +175,7 @@ export function ProjectCard({
 }: Props) {
   const [showPlayer, setShowPlayer] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -109,14 +191,10 @@ export function ProjectCard({
     >
       <div className="relative shrink-0">
         {video ? (
-          <video
+          <LazyVideo
             src={video}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="w-full aspect-video object-contain cursor-pointer"
+            videoLoaded={videoLoaded}
+            onPlaying={() => setVideoLoaded(true)}
             onClick={() => setShowPlayer(true)}
           />
         ) : (
@@ -154,15 +232,17 @@ export function ProjectCard({
             <h3 className="text-lg font-semibold font-heading">{title}</h3>
             <time className="text-sm text-muted-foreground">{dates}</time>
           </div>
-          <Link
-            href={href || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="-m-2 flex items-center justify-center size-10 text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full"
-            aria-label={`Open ${title}`}
-          >
-            <ArrowUpRight className="size-4" aria-hidden />
-          </Link>
+          {href && href !== "#" && (
+            <Link
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
+            >
+              View Project
+              <ArrowUpRight className="size-3" aria-hidden />
+            </Link>
+          )}
         </div>
         <div className="text-sm flex-1 prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
           <Markdown>{description}</Markdown>
@@ -198,11 +278,17 @@ export function ProjectCard({
       <AnimatePresence>
         {showPlayer && video && (
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${title} demo video`}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowPlayer(false)}
+            onKeyDown={(e) => { if (e.key === "Escape") setShowPlayer(false); }}
+            tabIndex={-1}
+            ref={(el) => el?.focus()}
           >
             <motion.div
               className="w-[90vw] max-w-4xl rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10"
