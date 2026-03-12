@@ -11,11 +11,13 @@ import WorkSection from "@/components/section/work-section";
 import SkillsSection from "@/components/section/skills-section";
 import { ArrowUpRight } from "lucide-react";
 import { FlippingImage } from "@/components/flipping-image";
+import { TracingBeam } from "@/components/ui/tracing-beam";
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function Page() {
   return (
+    <TracingBeam>
     <main className="min-h-dvh flex flex-col gap-16 relative">
       <section id="hero">
         <div className="mx-auto w-full space-y-8">
@@ -158,5 +160,6 @@ export default function Page() {
         </BlurFade>
       </section>
     </main>
+    </TracingBeam>
   );
 }

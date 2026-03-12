@@ -8,7 +8,6 @@ import { Space_Grotesk, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import Footer from "@/components/footer";
-import BackToTop from "@/components/back-to-top";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -66,10 +65,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scrollbar-none">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased relative",
+          "min-h-screen bg-background font-sans antialiased relative scrollbar-none",
           spaceGrotesk.variable,
           inter.variable,
           geistMono.variable
@@ -93,7 +92,6 @@ export default function RootLayout({
               <Footer />
             </div>
             <Navbar />
-            <BackToTop />
           </TooltipProvider>
         </ThemeProvider>
       </body>
