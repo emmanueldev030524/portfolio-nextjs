@@ -17,7 +17,7 @@ const BLUR_FADE_DELAY = 0.04;
 export default function Page() {
   return (
     <main className="min-h-dvh flex flex-col gap-16 relative">
-      <section id="hero" className="mb-4 overflow-clip">
+      <section id="hero" className="mb-4">
         <div className="mx-auto w-full space-y-8">
           <div className="gap-10 flex flex-col md:flex-row justify-between items-center">
             <div className="gap-2 flex flex-col order-2 md:order-1">
@@ -33,7 +33,7 @@ export default function Page() {
                 text={DATA.description}
               />
             </div>
-            <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
+            <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2 p-4">
               <FlippingImage
                 src={DATA.avatarUrl}
                 alt={DATA.name}
