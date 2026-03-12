@@ -100,14 +100,15 @@ export function ContactForm() {
     setStatus("submitting");
 
     const formData = new FormData(form);
-    const data = {
+    const data: Record<string, string> = {
       access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "",
-      firstname: formData.get("firstname"),
-      lastname: formData.get("lastname"),
-      email: formData.get("email"),
-      message: formData.get("message"),
-      botcheck: formData.get("botcheck"),
+      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
+      email: String(formData.get("email") || ""),
+      message: String(formData.get("message") || ""),
     };
+    if (formData.get("botcheck")) {
+      data.botcheck = String(formData.get("botcheck"));
+    }
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
