@@ -1,87 +1,130 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
+
 import { useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { motion, AnimatePresence } from "motion/react";
+import Image from "next/image";
 import { DATA } from "@/data/resume";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function LogoImage({ src, alt }: { src: string; alt: string }) {
-  const [imageError, setImageError] = useState(false);
+function CompanyLogo({ src, alt }: { src: string; alt: string }) {
+  const [error, setError] = useState(false);
 
-  if (!src || imageError) {
+  if (!src || error) {
     return (
-      <div className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
+      <div className="flex size-10 items-center justify-center rounded-full bg-muted text-xs font-bold text-white">
+        {alt.charAt(0)}
+      </div>
     );
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none"
-      onError={() => setImageError(true)}
-    />
+    <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-border/40 bg-white dark:bg-white/90 p-0.5">
+      <Image
+        src={src}
+        alt={alt}
+        width={56}
+        height={56}
+        className="size-full object-contain"
+        onError={() => setError(true)}
+      />
+    </div>
   );
 }
 
 export default function WorkSection() {
+  const [active, setActive] = useState(0);
+  const activeWork = DATA.work[active];
+  const totalTabs = DATA.work.length;
+  const beamPercent = ((active + 1) / totalTabs) * 100;
+
   return (
-    <Accordion type="single" collapsible className="w-full grid gap-6">
-      {DATA.work.map((work) => (
-        <AccordionItem
-          key={work.company}
-          value={work.company}
-          className="w-full border-b-0 grid gap-2"
-        >
-          <AccordionTrigger className="hover:no-underline p-0 cursor-pointer transition-colors rounded-none group [&>svg]:hidden">
-            <div className="flex items-center gap-x-3 justify-between w-full text-left">
-              <div className="flex items-center gap-x-3 flex-1 min-w-0">
-                <LogoImage src={work.logoUrl} alt={work.company} />
-                <div className="flex-1 min-w-0 gap-0.5 flex flex-col">
-                  <div className="font-semibold leading-none flex items-center gap-2">
-                    {work.company}
-                    <span className="relative inline-flex items-center w-3.5 h-3.5">
-                      <ChevronRight
-                        className={cn(
-                          "absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-300 ease-out",
-                          "translate-x-0 opacity-0",
-                          "group-hover:translate-x-1 group-hover:opacity-100",
-                          "group-data-[state=open]:opacity-0 group-data-[state=open]:translate-x-0"
-                        )}
-                      />
-                      <ChevronDown
-                        className={cn(
-                          "absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-200",
-                          "opacity-0 rotate-0",
-                          "group-data-[state=open]:opacity-100 group-data-[state=open]:rotate-180"
-                        )}
-                      />
-                    </span>
-                  </div>
-                  <div className="font-sans text-sm text-muted-foreground">
-                    {work.title}
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-                <span>
-                  {work.start} - {work.end ?? "Present"}
-                </span>
-              </div>
+    <div className="relative flex flex-col gap-6 md:flex-row md:gap-16">
+      {/* Left: Company tabs */}
+      <div className="relative flex flex-row gap-1 md:flex-col md:gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0 md:shrink-0">
+        {/* Beam — scoped to tab list height */}
+        <div className="absolute left-[2.5rem] top-0 bottom-0 w-[2px] hidden md:block">
+          <div className="absolute inset-0 bg-border/10 rounded-full" />
+          <motion.div
+            animate={{ height: `${beamPercent}%` }}
+            transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] rounded-full bg-foreground/20"
+          />
+        </div>
+        {DATA.work.map((work, index) => (
+          <button
+            key={work.company}
+            onClick={() => setActive(index)}
+            className={cn(
+              "relative flex items-center gap-3 rounded-lg px-3 py-3 text-left text-base cursor-pointer whitespace-nowrap transition-colors",
+              active === index
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {active === index && (
+              <motion.div
+                layoutId="activeWork"
+                className="absolute inset-0 rounded-lg bg-muted"
+                transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+              />
+            )}
+            <span className="relative z-10 flex items-center gap-3">
+              <CompanyLogo src={work.logoUrl} alt={work.company} />
+              <span className="font-medium text-base">{work.company}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Right: Details panel */}
+      <div className="flex-1 min-h-[260px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="flex flex-col gap-4"
+          >
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight font-heading break-words">
+                {activeWork.title}{" "}
+                <span className="text-cyan-400">@ {activeWork.company}</span>
+              </h3>
+              <p className="text-base tabular-nums text-muted-foreground mt-1">
+                {activeWork.start} - {activeWork.end ?? "Present"}
+              </p>
+              <p className="text-base text-muted-foreground">
+                {activeWork.location}
+              </p>
             </div>
-          </AccordionTrigger>
-          <AccordionContent className="p-0 ml-13 text-xs sm:text-sm text-muted-foreground">
-            {work.description}
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
+
+            {"highlights" in activeWork &&
+              (activeWork as { highlights: readonly string[] }).highlights && (
+                <div className="flex flex-col gap-3 mt-2">
+                  {(
+                    activeWork as { highlights: readonly string[] }
+                  ).highlights.map((highlight: string, i: number) => (
+                    <motion.div
+                      key={highlight}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.08, duration: 0.25 }}
+                      className="flex items-start gap-3"
+                    >
+                      <Check className="mt-1 size-4 shrink-0 text-cyan-400" />
+                      <span className="text-base text-muted-foreground leading-relaxed">
+                        {highlight}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
   );
 }
-

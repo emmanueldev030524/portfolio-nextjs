@@ -5,6 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
+  --font-heading: var(--font-heading);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -120,6 +121,10 @@
     @apply bg-background text-foreground;
   }
 
+  html {
+    overflow-x: clip;
+  }
+
   /* Shiki dual theme support */
   .shiki,
   .shiki span {
@@ -147,30 +152,36 @@
 
   .prose h1 {
     @apply text-2xl! font-semibold! tracking-tight! leading-tight!;
+    font-family: var(--font-heading);
   }
 
   .prose h2 {
     @apply text-xl! font-semibold! tracking-tight! leading-tight!;
+    font-family: var(--font-heading);
   }
 
   .prose h3 {
     @apply text-lg! font-semibold! tracking-tight! leading-tight!;
+    font-family: var(--font-heading);
   }
 
   .prose h4 {
     @apply text-base! font-medium! tracking-tight! leading-tight!;
+    font-family: var(--font-heading);
   }
 
   .prose h5 {
     @apply text-base! font-medium! tracking-tight! leading-tight!;
+    font-family: var(--font-heading);
   }
 
   .prose h6 {
     @apply text-base! font-medium! tracking-tight! leading-tight!;
+    font-family: var(--font-heading);
   }
 
   .prose a {
-    @apply text-primary underline underline-offset-4;
+    @apply text-primary underline underline-offset-4 break-words;
   }
 
   .prose blockquote {
@@ -233,4 +244,9 @@
     @apply border-b-0;
   }
 
+}
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
 }

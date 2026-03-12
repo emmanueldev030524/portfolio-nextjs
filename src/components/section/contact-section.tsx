@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import { Mail, Phone } from "lucide-react";
 import { DATA } from "@/data/resume";
 
 export default function ContactSection() {
@@ -19,23 +20,30 @@ export default function ContactSection() {
           }}
         />
       </div>
-      <div className="relative flex flex-col items-center gap-4 text-center">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+      <div className="relative flex flex-col items-center gap-6 text-center">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-heading">
           Get in Touch
         </h2>
-        <p className="mx-auto max-w-lg text-muted-foreground text-balance">
-          Want to chat? Just shoot me a dm{" "}
-          <Link
-            href={DATA.contact.social.X.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-          >
-            with a direct question on twitter
-          </Link>{" "}
-          and I&apos;ll respond whenever I can. I will ignore all
-          soliciting.
+        <p className="mx-auto max-w-lg text-lg text-muted-foreground text-balance">
+          Have a project in mind or need help automating your workflows?
+          Reach out and I&apos;ll get back to you as soon as possible.
         </p>
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <Link
+            href={`mailto:${DATA.contact.email}`}
+            className="inline-flex items-center gap-2.5 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
+          >
+            <Mail className="size-4 text-muted-foreground" />
+            {DATA.contact.email}
+          </Link>
+          <Link
+            href={`tel:${DATA.contact.tel}`}
+            className="inline-flex items-center gap-2.5 rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
+          >
+            <Phone className="size-4 text-muted-foreground" />
+            {DATA.contact.tel}
+          </Link>
+        </div>
       </div>
     </div>
   );
