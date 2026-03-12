@@ -45,6 +45,7 @@ export default function Page() {
                   dotScale={0.85}
                   shape="circle"
                   backgroundColor="#000000"
+                  backgroundColorLight="#1a1a1a"
                   dropoutStrength={0}
                   interactive
                   distortionMode="repel"

@@ -11,8 +11,10 @@ type PixelatedCanvasProps = {
   dotScale?: number;
   /** Shape of the dot drawn for each sample. */
   shape?: "circle" | "square";
-  /** Optional background color to clear the canvas with before drawing. */
+  /** Optional background color to clear the canvas with before drawing (used in dark mode). */
   backgroundColor?: string;
+  /** Background color for light mode. Falls back to backgroundColor if not set. */
+  backgroundColorLight?: string;
   /** Convert to grayscale before drawing. */
   grayscale?: boolean;
   className?: string;
@@ -62,6 +64,7 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
   dotScale = 0.9,
   shape = "square",
   backgroundColor = "#000000",
+  backgroundColorLight,
   grayscale = false,
   className,
   responsive = false,
@@ -83,6 +86,17 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
   fadeOnLeave = true,
   fadeSpeed = 0.1,
 }) => {
+  const isDark = () =>
+    typeof document !== "undefined" &&
+    document.documentElement.classList.contains("dark");
+
+  const resolvedBg = React.useRef(backgroundColor);
+
+  const getResolvedBg = React.useCallback(
+    () => (backgroundColorLight && !isDark() ? backgroundColorLight : backgroundColor),
+    [backgroundColorLight, backgroundColor],
+  );
+
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const samplesRef = React.useRef<
     Array<{
@@ -120,12 +134,15 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    resolvedBg.current = getResolvedBg();
+
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = src;
 
     const compute = () => {
       if (!canvas) return;
+      resolvedBg.current = getResolvedBg();
       const dpr =
         typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
 
@@ -142,8 +159,8 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
       ctx.resetTransform();
       ctx.scale(dpr, dpr);
 
-      if (backgroundColor) {
-        ctx.fillStyle = backgroundColor;
+      if (resolvedBg.current) {
+        ctx.fillStyle = resolvedBg.current;
         ctx.fillRect(0, 0, displayWidth, displayHeight);
       } else {
         ctx.clearRect(0, 0, displayWidth, displayHeight);
@@ -335,8 +352,8 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
         const dims = dimsRef.current;
         const samples = samplesRef.current;
         if (!ctx || !dims || !samples) return;
-        if (backgroundColor) {
-          ctx.fillStyle = backgroundColor;
+        if (resolvedBg.current) {
+          ctx.fillStyle = resolvedBg.current;
           ctx.fillRect(0, 0, dims.width, dims.height);
         } else {
           ctx.clearRect(0, 0, dims.width, dims.height);
@@ -424,8 +441,8 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
           activityRef.current = pointerInsideRef.current ? 1 : 0;
         }
 
-        if (backgroundColor) {
-          ctx.fillStyle = backgroundColor;
+        if (resolvedBg.current) {
+          ctx.fillStyle = resolvedBg.current;
           ctx.fillRect(0, 0, dims.width, dims.height);
         } else {
           ctx.clearRect(0, 0, dims.width, dims.height);
@@ -511,6 +528,22 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
       console.error("Failed to load image for PixelatedCanvas:", src);
     };
 
+    // Watch for theme changes (dark class toggle on <html>)
+    const themeObserver = new MutationObserver(() => {
+      const newBg = getResolvedBg();
+      if (newBg !== resolvedBg.current) {
+        resolvedBg.current = newBg;
+        // For non-interactive mode, re-render immediately
+        if (!interactive && img.complete && img.naturalWidth) {
+          compute();
+        }
+      }
+    });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
     if (responsive) {
       const onResize = () => {
         if (img.complete && img.naturalWidth) {
@@ -520,6 +553,7 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
       window.addEventListener("resize", onResize);
       return () => {
         isCancelled = true;
+        themeObserver.disconnect();
         window.removeEventListener("resize", onResize);
         if ((img as any)._cleanup) (img as any)._cleanup();
       };
@@ -527,6 +561,7 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
 
     return () => {
       isCancelled = true;
+      themeObserver.disconnect();
       if ((img as any)._cleanup) (img as any)._cleanup();
     };
   }, [
@@ -537,6 +572,8 @@ export const PixelatedCanvas: React.FC<PixelatedCanvasProps> = ({
     dotScale,
     shape,
     backgroundColor,
+    backgroundColorLight,
+    getResolvedBg,
     grayscale,
     responsive,
     dropoutStrength,
