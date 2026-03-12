@@ -133,6 +133,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         className
       )}
       viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
+      suppressHydrationWarning
     >
       <path
         d={pathD}
@@ -147,6 +148,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         stroke={`url(#${id})`}
         strokeOpacity="1"
         strokeLinecap="round"
+        suppressHydrationWarning
       />
       <defs>
         <motion.linearGradient

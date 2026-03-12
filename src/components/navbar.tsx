@@ -67,6 +67,7 @@ export default function Navbar() {
           .filter(([_, social]) => social.navbar)
           .map(([name, social], index) => {
             const isExternal = social.url.startsWith("http");
+            const isAnchor = social.url.startsWith("#");
             const IconComponent = social.icon;
             return (
               <Tooltip key={`social-${name}-${index}`}>
@@ -75,6 +76,10 @@ export default function Navbar() {
                     href={social.url}
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
+                    onClick={isAnchor ? (e) => {
+                      e.preventDefault();
+                      document.querySelector(social.url)?.scrollIntoView({ behavior: "smooth" });
+                    } : undefined}
                   >
                     <DockIcon className={DOCK_ICON_CLASS}>
                       <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
