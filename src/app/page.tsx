@@ -12,6 +12,11 @@ import SkillsSection from "@/components/section/skills-section";
 import { ArrowUpRight } from "lucide-react";
 import { HeroAvatar } from "@/components/hero-avatar";
 import { TracingBeam } from "@/components/ui/tracing-beam";
+import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
+import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { CountUp } from "@/components/ui/count-up";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
+import { ScrollParallax } from "@/components/ui/scroll-parallax";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -23,41 +28,56 @@ export default function Page() {
         <div className="mx-auto w-full space-y-8">
           <div className="gap-10 flex flex-col md:flex-row justify-between items-center">
             <div className="gap-2 flex flex-col order-2 md:order-1">
-              <BlurFadeText
-                delay={BLUR_FADE_DELAY}
-                className="text-4xl font-semibold tracking-tighter sm:text-5xl lg:text-6xl font-heading"
-                yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
-              />
+              <BlurFade delay={BLUR_FADE_DELAY} yOffset={20} blur="10px">
+                <h1 className="text-4xl font-semibold tracking-tighter sm:text-5xl lg:text-6xl font-heading">
+                  Hi, I&apos;m{" "}
+                  <AnimatedGradientText className="font-bold">
+                    {DATA.name.split(" ")[0]}
+                  </AnimatedGradientText>
+                </h1>
+              </BlurFade>
               <BlurFadeText
                 className="text-muted-foreground max-w-[600px] text-lg md:text-xl lg:text-2xl"
-                delay={BLUR_FADE_DELAY}
+                delay={BLUR_FADE_DELAY * 3}
                 text={DATA.description}
               />
+              <BlurFade delay={BLUR_FADE_DELAY * 5} yOffset={20} blur="10px">
+                <ShimmerButton
+                  href="#projects"
+                  className="mt-4"
+                >
+                  View My Work
+                </ShimmerButton>
+              </BlurFade>
             </div>
-            <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2 p-4">
-              <div className="size-48 md:size-56 rounded-full overflow-hidden shadow-2xl ring-4 ring-muted">
-                <HeroAvatar />
-              </div>
+            <BlurFade delay={BLUR_FADE_DELAY * 2} yOffset={20} blur="10px" className="order-1 md:order-2 p-4">
+              <ScrollParallax>
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400/20 via-transparent to-white/10 blur-2xl scale-125 animate-pulse motion-reduce:animate-none" />
+                  <div className="relative size-48 md:size-56 rounded-full overflow-hidden shadow-2xl ring-4 ring-muted">
+                    <HeroAvatar />
+                  </div>
+                </div>
+              </ScrollParallax>
             </BlurFade>
           </div>
         </div>
       </section>
       <section id="about">
         <div className="flex min-h-0 flex-col gap-y-4">
-          <BlurFade delay={BLUR_FADE_DELAY * 3}>
-            <h2 className="text-2xl font-bold font-heading">About</h2>
-          </BlurFade>
+          <AnimatedHeading>About</AnimatedHeading>
           <BlurFade delay={BLUR_FADE_DELAY * 4}>
             <div className="text-lg max-w-full text-pretty font-sans leading-relaxed text-muted-foreground space-y-4">
               <p>
                 With over{" "}
                 <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">8 years</span>
+                  <span className="font-semibold text-foreground">
+                    <CountUp target={8} suffix="+" /> years
+                  </span>
                 </Highlighter>{" "}
                 of experience in web development and automation, I specialize in front-end{" "}
                 <Highlighter action="underline" color="#22d3ee">
-                  <a href="https://wordpress.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                  <a href="https://wordpress.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                     WordPress
                   </a>
                 </Highlighter>{" "}
@@ -65,11 +85,11 @@ export default function Page() {
               </p>
               <p>
                 I&apos;ve collaborated with companies such as{" "}
-                <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                   DrTalks
                 </a>{" "}
                 and{" "}
-                <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors">
+                <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                   BoxOut Marketing
                 </a>
                 , delivering solutions ranging from custom WordPress builds and{" "}
@@ -83,7 +103,13 @@ export default function Page() {
                 workflows.
               </p>
               <p>
-                Based in the Philippines, I work with clients worldwide to build scalable websites and efficient digital systems that support business growth.
+                Based in the Philippines, I work with clients worldwide — automating workflows that save businesses{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">
+                    <CountUp target={50} suffix="+" /> hours
+                  </span>
+                </Highlighter>{" "}
+                a month.
               </p>
             </div>
           </BlurFade>
@@ -91,9 +117,7 @@ export default function Page() {
       </section>
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-6">
-          <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-2xl font-bold font-heading">Work Experience</h2>
-          </BlurFade>
+          <AnimatedHeading>Work Experience</AnimatedHeading>
           <BlurFade delay={BLUR_FADE_DELAY * 6}>
             <WorkSection />
           </BlurFade>
@@ -101,9 +125,7 @@ export default function Page() {
       </section>
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-6">
-          <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-2xl font-bold font-heading">Education</h2>
-          </BlurFade>
+          <AnimatedHeading>Education</AnimatedHeading>
           <div className="flex flex-col gap-8">
             {DATA.education.map((education, index) => (
               <BlurFade

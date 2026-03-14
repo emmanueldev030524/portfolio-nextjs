@@ -45,6 +45,7 @@
 
 :root {
   --radius: 0.625rem;
+  --accent-cyan: oklch(0.75 0.15 195);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -79,6 +80,7 @@
 }
 
 .dark {
+  --accent-cyan: oklch(0.8 0.16 195);
   --background: oklch(0.18 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -257,4 +259,26 @@
 ::view-transition-old(root), ::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
+}
+
+.dark body {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.25 0.03 195 / 25%), transparent),
+              oklch(0.18 0 0);
+}
+
+.link-hover-underline {
+  position: relative;
+}
+.link-hover-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, #22d3ee, #67e8f9);
+  transition: width 0.3s ease;
+}
+.link-hover-underline:hover::after {
+  width: 100%;
 }

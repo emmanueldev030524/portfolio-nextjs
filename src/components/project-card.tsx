@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, FolderOpen, Play } from "lucide-react";
 import Image from "next/image";
@@ -15,7 +16,7 @@ const VideoPlayer = dynamic(() => import("@/components/ui/video-player"), {
   ssr: false,
 });
 
-const MAX_VISIBLE_TAGS = 6;
+const MAX_VISIBLE_TAGS = 4;
 
 const TAG_COLORS: Record<string, string> = {
   // Frameworks — blue
@@ -39,7 +40,7 @@ const TAG_COLORS: Record<string, string> = {
 
 function ProjectImageFallback() {
   return (
-    <div className="w-full h-48 bg-muted flex items-center justify-center">
+    <div className="w-full aspect-video bg-muted flex items-center justify-center">
       <FolderOpen className="size-10 text-muted-foreground/30" />
     </div>
   );
@@ -62,15 +63,15 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
   }
 
   return (
-    <div className="relative w-full h-48">
+    <div className="relative w-full aspect-video">
       {!loaded && <MediaSkeleton />}
       <Image
         src={src}
         alt={alt}
         width={600}
-        height={192}
+        height={338}
         className={cn(
-          "w-full h-48 object-cover transition-opacity duration-300",
+          "w-full aspect-video object-cover transition-opacity duration-300",
           loaded ? "opacity-100" : "opacity-0"
         )}
         onLoad={() => setLoaded(true)}
@@ -141,7 +142,7 @@ function LazyVideo({
           playsInline
           preload="none"
           className={cn(
-            "w-full aspect-video object-contain cursor-pointer transition-opacity duration-300",
+            "w-full aspect-video object-cover cursor-pointer transition-opacity duration-300",
             videoLoaded ? "opacity-100" : "opacity-0"
           )}
           onPlaying={onPlaying}
@@ -185,7 +186,7 @@ export function ProjectCard({
     <>
     <div
       className={cn(
-        "flex flex-col h-full border border-border rounded-xl overflow-hidden hover:ring-2 cursor-pointer hover:ring-muted transition-shadow duration-200",
+        "flex flex-col h-full border border-border rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-cyan-500/5 dark:hover:shadow-cyan-400/10 transition-shadow duration-300",
         className
       )}
     >
@@ -244,7 +245,7 @@ export function ProjectCard({
             </Link>
           )}
         </div>
-        <div className="text-sm flex-1 prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
+        <div className="text-sm prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert line-clamp-3">
           <Markdown>{description}</Markdown>
         </div>
         {tags && tags.length > 0 && (
@@ -262,12 +263,21 @@ export function ProjectCard({
               </Badge>
             ))}
             {tags.length > MAX_VISIBLE_TAGS && (
-              <Badge
-                className="text-xs font-medium h-7 w-fit px-2.5 border border-border text-muted-foreground"
-                variant="outline"
-              >
-                +{tags.length - MAX_VISIBLE_TAGS}
-              </Badge>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge
+                      className="text-xs font-medium h-7 w-fit px-2.5 border border-border text-muted-foreground cursor-pointer"
+                      variant="outline"
+                    >
+                      +{tags.length - MAX_VISIBLE_TAGS}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-[200px] bg-popover text-popover-foreground border border-border shadow-lg" sideOffset={8}>
+                    <p>{tags.slice(MAX_VISIBLE_TAGS).join(", ")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
         )}

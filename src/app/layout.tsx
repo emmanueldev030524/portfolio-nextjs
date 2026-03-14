@@ -9,6 +9,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import Footer from "@/components/footer";
+import { SplashScreen } from "@/components/ui/splash-screen";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -76,6 +77,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
+          <SplashScreen />
           <TooltipProvider delayDuration={0}>
             <a
               href="#hero"

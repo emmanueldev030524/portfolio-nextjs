@@ -1,8 +1,9 @@
-import BlurFade from "@/components/magicui/blur-fade";
-import { ProjectCard } from "@/components/project-card";
-import { DATA } from "@/data/resume";
+"use client";
 
-const BLUR_FADE_DELAY = 0.04;
+import { motion } from "motion/react";
+import { ProjectCard } from "@/components/project-card";
+import { TiltCard } from "@/components/ui/tilt-card";
+import { DATA } from "@/data/resume";
 
 export default function ProjectsSection() {
     return (
@@ -33,27 +34,34 @@ export default function ProjectsSection() {
                 </div>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 auto-rows-fr">
                     {DATA.projects.map((project, id) => (
-                        <BlurFade
+                        <motion.div
                             key={project.title}
-                            delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{
+                                duration: 0.5,
+                                delay: id * 0.1,
+                                ease: [0.21, 0.47, 0.32, 0.98],
+                            }}
                             className="h-full"
                         >
-                            <ProjectCard
-                                href={project.href}
-                                key={project.title}
-                                title={project.title}
-                                description={project.description}
-                                dates={project.dates}
-                                tags={project.technologies}
-                                image={project.image}
-                                video={project.video}
-                                links={project.links}
-                            />
-                        </BlurFade>
+                            <TiltCard className="h-full">
+                                <ProjectCard
+                                    href={project.href}
+                                    title={project.title}
+                                    description={project.description}
+                                    dates={project.dates}
+                                    tags={project.technologies}
+                                    image={project.image}
+                                    video={project.video}
+                                    links={project.links}
+                                />
+                            </TiltCard>
+                        </motion.div>
                     ))}
                 </div>
             </div>
         </section>
     );
 }
-

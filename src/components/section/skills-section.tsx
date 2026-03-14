@@ -1,11 +1,10 @@
 "use client";
 
-import BlurFade from "@/components/magicui/blur-fade";
+import { motion } from "motion/react";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 import { DATA } from "@/data/resume";
 import { Code2, Globe, Workflow, Wrench } from "lucide-react";
-
-const BLUR_FADE_DELAY = 0.04;
 
 const SKILL_CATEGORIES = [
   {
@@ -35,15 +34,16 @@ const skillMap = new Map<string, (typeof DATA.skills)[number]>(DATA.skills.map((
 export default function SkillsSection() {
   return (
     <div className="flex min-h-0 flex-col gap-y-4">
-      <BlurFade delay={BLUR_FADE_DELAY * 9}>
-        <h2 className="text-2xl font-bold font-heading">Skills</h2>
-      </BlurFade>
+      <AnimatedHeading>Skills</AnimatedHeading>
       <HoverEffect
         items={SKILL_CATEGORIES.map((category, catIndex) => ({
           content: (
-            <BlurFade
+            <motion.div
               key={category.label}
-              delay={BLUR_FADE_DELAY * 10 + catIndex * 0.08}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.4, delay: catIndex * 0.1, ease: "easeOut" }}
               className="h-full"
             >
               <div className="border border-border/50 rounded-xl p-5 flex flex-col gap-4 bg-card/50 h-full">
@@ -54,20 +54,28 @@ export default function SkillsSection() {
                     const skill = skillMap.get(skillName);
                     const IconComponent = skill && "icon" in skill ? skill.icon : undefined;
                     return (
-                      <BlurFade
+                      <motion.div
                         key={skillName}
-                        delay={BLUR_FADE_DELAY * 10 + catIndex * 0.08 + skillIndex * 0.03}
+                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.3,
+                          delay: catIndex * 0.1 + skillIndex * 0.04,
+                          ease: "easeOut",
+                        }}
+                        whileHover={{ scale: 1.05 }}
                       >
-                        <div className="border bg-background border-border ring-2 ring-border/20 rounded-xl h-10 w-fit px-4 flex items-center gap-2">
+                        <div className="border bg-background border-border ring-2 ring-border/20 rounded-xl h-10 w-fit px-4 flex items-center gap-2 transition-shadow duration-200 hover:shadow-md">
                           {IconComponent && <IconComponent className="size-4 rounded overflow-hidden object-contain" />}
                           <span className="text-foreground text-sm font-medium">{skillName}</span>
                         </div>
-                      </BlurFade>
+                      </motion.div>
                     );
                   })}
                 </div>
               </div>
-            </BlurFade>
+            </motion.div>
           ),
         }))}
       />

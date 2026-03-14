@@ -39,14 +39,14 @@ function Card({
         hovered !== null && hovered !== index && "opacity-50",
         hovered === index && "border-border shadow-md"
       )}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 30, rotate: -1 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       <div
         className={cn(
-          "absolute inset-0 opacity-0 transition-opacity duration-300 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/10",
+          "absolute inset-0 opacity-0 transition-opacity duration-300 bg-gradient-to-br from-cyan-500/15 via-transparent to-white/10",
           hovered === index && "opacity-100"
         )}
       />

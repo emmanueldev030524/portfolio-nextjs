@@ -155,6 +155,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
           className="transform-gpu"
           id={id}
           gradientUnits={"userSpaceOnUse"}
+          suppressHydrationWarning
           initial={{
             x1: "0%",
             x2: "0%",
