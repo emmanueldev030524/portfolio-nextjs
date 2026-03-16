@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, ArrowRight } from "lucide-react";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
@@ -52,13 +53,6 @@ const DISPOSABLE_DOMAINS = new Set([
   "guerrillamail.info", "guerrillamail.net", "guerrillamail.org",
   "guerrillamail.de", "grr.la", "guerrillamailblock.com",
 ]);
-
-const BottomGradient = () => (
-  <>
-    <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-    <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
-  </>
-);
 
 const LabelInputContainer = ({
   children,
@@ -150,7 +144,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-white p-4 md:p-8 dark:bg-black">
+    <div className="shadow-input mx-auto w-full max-w-md rounded-2xl bg-card border border-border/50 p-4 md:p-8 dark:border-transparent dark:bg-black">
       <form onSubmit={handleSubmit}>
         <input type="checkbox" name="botcheck" className="hidden" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
@@ -189,10 +183,11 @@ export function ContactForm() {
           />
         </LabelInputContainer>
 
-        <button
-          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] disabled:opacity-50 disabled:pointer-events-none"
-          type="submit"
-          disabled={status === "submitting"}
+        <HoverBorderGradient
+          as="button"
+          containerClassName="rounded-xl w-full disabled:opacity-50 disabled:pointer-events-none"
+          className="bg-black text-white dark:bg-zinc-950 ring-1 ring-white/20 flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold"
+          {...{ type: "submit", disabled: status === "submitting" } as any}
         >
           {status === "submitting" ? (
             <span className="inline-flex items-center gap-2">
@@ -200,10 +195,12 @@ export function ContactForm() {
               Sending...
             </span>
           ) : (
-            <>Send Message &rarr;</>
+            <span className="inline-flex items-center gap-2">
+              Send Message
+              <ArrowRight className="size-4 transition-transform duration-200 group-hover/hbg:translate-x-1" />
+            </span>
           )}
-          <BottomGradient />
-        </button>
+        </HoverBorderGradient>
 
         {status === "error" && (
           <p className="mt-4 text-sm text-red-500 text-center">

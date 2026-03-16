@@ -20,9 +20,32 @@ import { ScrollParallax } from "@/components/ui/scroll-parallax";
 
 const BLUR_FADE_DELAY = 0.04;
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: DATA.name,
+  url: DATA.url,
+  image: `${DATA.url}/me.png`,
+  jobTitle: "WordPress Developer & Automation Specialist",
+  description: DATA.description,
+  knowsAbout: [
+    "WordPress", "WooCommerce", "Next.js", "React", "TypeScript",
+    "Tailwind CSS", "Make.com", "n8n", "Zapier", "GoHighLevel",
+    "Keap", "ActiveCampaign", "Braze", "Workflow Automation",
+  ],
+  sameAs: [
+    DATA.contact.social.GitHub.url,
+    DATA.contact.social.Facebook.url,
+  ],
+};
+
 export default function Page() {
   return (
     <TracingBeam>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <main className="min-h-dvh flex flex-col gap-16 relative">
       <section id="hero">
         <div className="mx-auto w-full space-y-8">
@@ -42,10 +65,7 @@ export default function Page() {
                 text={DATA.description}
               />
               <BlurFade delay={BLUR_FADE_DELAY * 5} yOffset={20} blur="10px">
-                <ShimmerButton
-                  href="#projects"
-                  className="mt-4"
-                >
+                <ShimmerButton href="#projects" className="mt-4">
                   View My Work
                 </ShimmerButton>
               </BlurFade>
@@ -75,16 +95,25 @@ export default function Page() {
                     <CountUp target={8} suffix="+" /> years
                   </span>
                 </Highlighter>{" "}
-                of experience in web development and automation, I specialize in front-end{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <a href="https://wordpress.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
-                    WordPress
-                  </a>
-                </Highlighter>{" "}
-                development, creating fast, user-friendly, and visually engaging websites. I also design automation systems that simplify business processes, saving clients time and operational costs.
+                of experience in web development and automation, I build fast, scalable, and visually engaging digital experiences.
               </p>
               <p>
-                I&apos;ve collaborated with companies such as{" "}
+                I specialize in{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">modern web development</span>
+                </Highlighter>
+                ,{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">CRM integrations</span>
+                </Highlighter>
+                , and{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">workflow automation</span>
+                </Highlighter>
+                , helping businesses streamline operations and eliminate repetitive tasks.
+              </p>
+              <p>
+                I&apos;ve worked with companies such as{" "}
                 <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                   DrTalks
                 </a>{" "}
@@ -92,24 +121,16 @@ export default function Page() {
                 <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                   BoxOut Marketing
                 </a>
-                , delivering solutions ranging from custom WordPress builds and{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">CRM integrations</span>
-                </Highlighter>{" "}
-                to full{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">marketing automation</span>
-                </Highlighter>{" "}
-                workflows.
+                , delivering solutions ranging from custom websites and system integrations to full marketing automation workflows.
               </p>
               <p>
-                Based in the Philippines, I work with clients worldwide — automating workflows that save businesses{" "}
+                Based in the Philippines, I work with clients worldwide — building systems that save teams{" "}
                 <Highlighter action="underline" color="#22d3ee">
                   <span className="font-semibold text-foreground">
                     <CountUp target={50} suffix="+" /> hours
                   </span>
                 </Highlighter>{" "}
-                a month.
+                every month and help businesses operate more efficiently.
               </p>
             </div>
           </BlurFade>
@@ -159,7 +180,7 @@ export default function Page() {
                         {education.start} - {education.end}
                       </span>
                     </div>
-                    <p className="font-sans text-sm md:text-base text-muted-foreground mt-0.5">
+                    <p className="font-sans text-sm md:text-base text-foreground/70 mt-0.5">
                       {education.degree}
                     </p>
                   </div>
