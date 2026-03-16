@@ -9,7 +9,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import Footer from "@/components/footer";
-import { SplashScreen } from "@/components/ui/splash-screen";
+
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -32,15 +32,33 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: DATA.name,
+    default: `${DATA.name} — WordPress Developer & Automation Specialist`,
     template: `%s | ${DATA.name}`,
   },
   description: DATA.description,
+  keywords: [
+    "WordPress developer",
+    "workflow automation",
+    "Make.com",
+    "n8n",
+    "Zapier",
+    "CRM integration",
+    "GoHighLevel",
+    "Keap",
+    "ActiveCampaign",
+    "Next.js developer",
+    "React developer",
+    "freelance web developer",
+    "WooCommerce",
+    DATA.name,
+  ],
+  authors: [{ name: DATA.name, url: DATA.url }],
+  creator: DATA.name,
   openGraph: {
-    title: `${DATA.name}`,
+    title: `${DATA.name} — WordPress Developer & Automation Specialist`,
     description: DATA.description,
     url: DATA.url,
-    siteName: `${DATA.name}`,
+    siteName: DATA.name,
     locale: "en_US",
     type: "website",
   },
@@ -56,8 +74,12 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: `${DATA.name}`,
+    title: `${DATA.name} — WordPress Developer & Automation Specialist`,
     card: "summary_large_image",
+    description: DATA.description,
+  },
+  alternates: {
+    canonical: DATA.url,
   },
 };
 
@@ -77,7 +99,6 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <SplashScreen />
           <TooltipProvider delayDuration={0}>
             <a
               href="#hero"

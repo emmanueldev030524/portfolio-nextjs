@@ -1,10 +1,10 @@
 "use client";
 
+import { Code2, Globe, Workflow, Wrench } from "lucide-react";
 import { motion } from "motion/react";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { AnimatedHeading } from "@/components/ui/animated-heading";
 import { DATA } from "@/data/resume";
-import { Code2, Globe, Workflow, Wrench } from "lucide-react";
 
 const SKILL_CATEGORIES = [
   {

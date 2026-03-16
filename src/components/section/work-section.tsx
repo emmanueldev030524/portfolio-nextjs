@@ -12,7 +12,7 @@ function CompanyLogo({ src, alt }: { src: string; alt: string }) {
 
   if (!src || error) {
     return (
-      <div className="flex size-12 items-center justify-center rounded-full bg-muted text-xs font-bold text-white">
+      <div className="flex size-12 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground dark:text-white">
         {alt.charAt(0)}
       </div>
     );
@@ -114,7 +114,7 @@ export default function WorkSection() {
             <div>
               <h3 className="text-xl sm:text-2xl font-bold tracking-tight font-heading break-words">
                 {activeWork.title}{" "}
-                <span className="text-cyan-400">@ {activeWork.company}</span>
+                <span className="text-cyan-600 dark:text-cyan-400">@ {activeWork.company}</span>
               </h3>
               <p className="text-base tabular-nums text-muted-foreground mt-1">
                 {activeWork.start} - {activeWork.end ?? "Present"}
@@ -137,7 +137,7 @@ export default function WorkSection() {
                       transition={{ delay: i * 0.08, duration: 0.25 }}
                       className="flex items-start gap-3"
                     >
-                      <Check className="mt-1 size-4 shrink-0 text-cyan-400" />
+                      <Check className="mt-1 size-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
                       <span className="text-base text-muted-foreground leading-relaxed">
                         {highlight}
                       </span>

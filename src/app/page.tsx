@@ -13,10 +13,10 @@ import { ArrowUpRight } from "lucide-react";
 import { HeroAvatar } from "@/components/hero-avatar";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { CountUp } from "@/components/ui/count-up";
+
 import { AnimatedHeading } from "@/components/ui/animated-heading";
 import { ScrollParallax } from "@/components/ui/scroll-parallax";
+import { ScrollIndicator } from "@/components/ui/scroll-indicator";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -64,11 +64,6 @@ export default function Page() {
                 delay={BLUR_FADE_DELAY * 3}
                 text={DATA.description}
               />
-              <BlurFade delay={BLUR_FADE_DELAY * 5} yOffset={20} blur="10px">
-                <ShimmerButton href="#projects" className="mt-4">
-                  View My Work
-                </ShimmerButton>
-              </BlurFade>
             </div>
             <BlurFade delay={BLUR_FADE_DELAY * 2} yOffset={20} blur="10px" className="order-1 md:order-2 p-4">
               <ScrollParallax>
@@ -81,39 +76,30 @@ export default function Page() {
               </ScrollParallax>
             </BlurFade>
           </div>
+          <BlurFade delay={BLUR_FADE_DELAY * 6} className="flex justify-center mt-8">
+            <ScrollIndicator targetId="about" />
+          </BlurFade>
         </div>
       </section>
       <section id="about">
-        <div className="flex min-h-0 flex-col gap-y-4">
+        <div className="flex min-h-0 flex-col gap-y-6">
           <AnimatedHeading>About</AnimatedHeading>
+
           <BlurFade delay={BLUR_FADE_DELAY * 4}>
             <div className="text-lg max-w-full text-pretty font-sans leading-relaxed text-muted-foreground space-y-4">
               <p>
                 With over{" "}
                 <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">
-                    <CountUp target={8} suffix="+" /> years
-                  </span>
+                  <span className="font-semibold text-foreground">8 years</span>
                 </Highlighter>{" "}
-                of experience in web development and automation, I build fast, scalable, and visually engaging digital experiences.
+                of experience in web development and automation, I specialize in front-end{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">WordPress</span>
+                </Highlighter>{" "}
+                development, creating fast, user-friendly, and visually engaging websites. I also design automation systems that simplify business processes, saving clients time and operational costs.
               </p>
               <p>
-                I specialize in{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">modern web development</span>
-                </Highlighter>
-                ,{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">CRM integrations</span>
-                </Highlighter>
-                , and{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">workflow automation</span>
-                </Highlighter>
-                , helping businesses streamline operations and eliminate repetitive tasks.
-              </p>
-              <p>
-                I&apos;ve worked with companies such as{" "}
+                I&apos;ve collaborated with companies such as{" "}
                 <a href="https://drtalks.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                   DrTalks
                 </a>{" "}
@@ -121,16 +107,18 @@ export default function Page() {
                 <a href="https://boxoutmarketing.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:text-cyan-400 transition-colors link-hover-underline">
                   BoxOut Marketing
                 </a>
-                , delivering solutions ranging from custom websites and system integrations to full marketing automation workflows.
+                , delivering solutions ranging from custom WordPress builds and{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">CRM integrations</span>
+                </Highlighter>{" "}
+                to full{" "}
+                <Highlighter action="underline" color="#22d3ee">
+                  <span className="font-semibold text-foreground">marketing automation</span>
+                </Highlighter>{" "}
+                workflows.
               </p>
               <p>
-                Based in the Philippines, I work with clients worldwide — building systems that save teams{" "}
-                <Highlighter action="underline" color="#22d3ee">
-                  <span className="font-semibold text-foreground">
-                    <CountUp target={50} suffix="+" /> hours
-                  </span>
-                </Highlighter>{" "}
-                every month and help businesses operate more efficiently.
+                Based in the Philippines, I work with clients worldwide to build scalable websites and efficient digital systems that support business growth.
               </p>
             </div>
           </BlurFade>

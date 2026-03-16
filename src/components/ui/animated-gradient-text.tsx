@@ -20,7 +20,7 @@ export function AnimatedGradientText({
   return (
     <motion.span
       className={cn(
-        "bg-gradient-to-r from-cyan-500 via-cyan-300 to-cyan-500 bg-clip-text text-transparent dark:from-cyan-400 dark:via-white dark:to-cyan-400",
+        "bg-gradient-to-r from-cyan-600 via-cyan-500 to-cyan-600 bg-clip-text text-transparent dark:from-cyan-400 dark:via-white dark:to-cyan-400",
         className
       )}
       style={{

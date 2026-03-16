@@ -17,6 +17,10 @@ const BLOCKED_LOCAL_PARTS = [
   "nobody", "spam", "junk", "temp", "tmp",
 ];
 
+const BLOCKED_LOCAL_REGEX = new RegExp(
+  `^(${BLOCKED_LOCAL_PARTS.join("|")})(\\.|\\d+)?$`
+);
+
 const DISPOSABLE_DOMAINS = new Set([
   "mailinator.com", "tempmail.com", "throwaway.email", "guerrillamail.com",
   "sharklasers.com", "grr.la", "guerrillamailblock.com", "pokemail.net",
@@ -82,7 +86,7 @@ export function ContactForm() {
     }
 
     const [localPart, domain] = email.split("@");
-    if (BLOCKED_LOCAL_PARTS.some((p) => localPart === p || localPart.startsWith(`${p}.`) || localPart.match(new RegExp(`^${p}\\d+$`)))) {
+    if (BLOCKED_LOCAL_REGEX.test(localPart)) {
       setEmailError("Please use a real email address, not a test one.");
       return;
     }
@@ -187,7 +191,8 @@ export function ContactForm() {
           as="button"
           containerClassName="rounded-xl w-full disabled:opacity-50 disabled:pointer-events-none"
           className="bg-black text-white dark:bg-zinc-950 ring-1 ring-white/20 flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold"
-          {...{ type: "submit", disabled: status === "submitting" } as any}
+          type="submit"
+          disabled={status === "submitting"}
         >
           {status === "submitting" ? (
             <span className="inline-flex items-center gap-2">

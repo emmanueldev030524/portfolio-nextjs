@@ -64,6 +64,7 @@ export function ServicesBeam() {
               alt="Emmanuel"
               width={40}
               height={40}
+              priority
               className="size-full rounded-full object-cover"
             />
           </Circle>

@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2, Volume1, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const formatTime = (seconds: number) => {
@@ -91,7 +91,6 @@ const VideoPlayer = ({
 
   const handleVideoClick = () => {
     if (isTouchDevice.current) {
-      // Mobile: toggle controls, auto-hide after 2s when showing
       setShowControls((prev) => {
         if (hideTimer.current) clearTimeout(hideTimer.current);
         if (!prev) startHideTimer();

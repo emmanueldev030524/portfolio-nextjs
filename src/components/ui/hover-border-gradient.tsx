@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
+import { COLORS } from "@/constants/colors";
 import { cn } from "@/lib/utils";
 
 type Direction = "TOP" | "LEFT" | "BOTTOM" | "RIGHT";
@@ -31,7 +32,7 @@ export function HoverBorderGradient({
     className?: string;
     duration?: number;
     clockwise?: boolean;
-  } & React.HTMLAttributes<HTMLElement>
+  } & React.HTMLAttributes<HTMLElement> & React.ButtonHTMLAttributes<HTMLButtonElement>
 >) {
   const [hovered, setHovered] = useState<boolean>(false);
   const [direction, setDirection] = useState<Direction>("TOP");
@@ -51,16 +52,15 @@ export function HoverBorderGradient({
     return directions[nextIndex];
   }, [clockwise]);
 
-  const glowColor = isDark ? "hsl(0, 0%, 100%)" : "#06b6d4";
-  const glowFade = isDark ? "rgba(255, 255, 255, 0)" : "rgba(6, 182, 212, 0)";
+  const glowColor = isDark ? COLORS.white.full : COLORS.cyan[500];
+  const glowFade = isDark ? COLORS.white.fade : COLORS.cyan.fade;
   const movingMap = getMovingMap(glowColor, glowFade);
 
   const highlight =
-    "radial-gradient(75% 181.15942028985506% at 50% 50%, #06b6d4 0%, rgba(255, 255, 255, 0) 100%)";
+    `radial-gradient(75% 181.15942028985506% at 50% 50%, ${COLORS.cyan[500]} 0%, ${COLORS.white.fade} 100%)`;
 
   useEffect(() => {
     if (!hovered) {
-      // Immediate tick after remount (theme switch) so animation starts right away
       const kickstart = setTimeout(() => {
         setDirection((prev) => rotateDirection(prev));
       }, 50);

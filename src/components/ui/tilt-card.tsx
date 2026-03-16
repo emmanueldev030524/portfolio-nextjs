@@ -77,8 +77,8 @@ export function TiltCard({
       {/* Gradient border overlay */}
       <div
         className={cn(
-          "pointer-events-none absolute -inset-[1px] rounded-xl bg-gradient-to-br from-cyan-400/0 via-transparent to-white/0 opacity-0 transition-opacity duration-300",
-          isHovered && "from-cyan-400/40 to-white/30 opacity-100"
+          "pointer-events-none absolute -inset-[1px] rounded-xl bg-gradient-to-br from-cyan-400/0 via-transparent to-cyan-200/0 dark:to-white/0 opacity-0 transition-opacity duration-300",
+          isHovered && "from-cyan-400/40 to-cyan-200/30 dark:to-white/30 opacity-100"
         )}
         style={{ zIndex: 0 }}
       />

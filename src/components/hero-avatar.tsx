@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PixelatedCanvas } from "@/components/ui/pixelated-canvas";
+import { COLORS } from "@/constants/colors";
 import { DATA } from "@/data/resume";
 
 const MOBILE_BREAKPOINT = 768;
@@ -25,8 +26,8 @@ export function HeroAvatar() {
       cellSize={3}
       dotScale={0.85}
       shape="circle"
-      backgroundColor="#000000"
-      backgroundColorLight="#1a1a1a"
+      backgroundColor={COLORS.dark.bg}
+      backgroundColorLight={COLORS.dark.bgAlt}
       dropoutStrength={0}
       interactive
       distortionMode="repel"

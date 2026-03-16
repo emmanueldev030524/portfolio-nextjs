@@ -12,12 +12,12 @@ import {
 import { ServicesBeam } from "@/components/services-beam";
 
 const SERVICE_ICONS = [
-  <Code2 key="code" className="size-7 text-cyan-400" />,
-  <Workflow key="workflow" className="size-7 text-purple-400" />,
-  <Users key="users" className="size-7 text-pink-400" />,
-  <Layout key="layout" className="size-7 text-blue-400" />,
-  <Plug key="plug" className="size-7 text-emerald-400" />,
-  <Wrench key="wrench" className="size-7 text-amber-400" />,
+  <Code2 key="code" className="size-7 text-cyan-600 dark:text-cyan-400" />,
+  <Workflow key="workflow" className="size-7 text-cyan-600 dark:text-cyan-400" />,
+  <Users key="users" className="size-7 text-cyan-600 dark:text-cyan-400" />,
+  <Layout key="layout" className="size-7 text-cyan-600 dark:text-cyan-400" />,
+  <Plug key="plug" className="size-7 text-cyan-600 dark:text-cyan-400" />,
+  <Wrench key="wrench" className="size-7 text-cyan-600 dark:text-cyan-400" />,
 ];
 
 export default function ServicesSection() {

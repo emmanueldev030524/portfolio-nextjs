@@ -1,7 +1,8 @@
 "use client";
 import { ReactNode, useRef } from "react";
-import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "motion/react";
+import { TIMELINE_RAINBOW_GRADIENT } from "@/constants/colors";
+import { cn } from "@/lib/utils";
 
 type Orientation = "vertical" | "horizontal";
 
@@ -81,7 +82,6 @@ export function Timeline({
         className
       )}
     >
-      {/* Rainbow scroll beam - aligned to the left with timeline dots */}
       {orientation === "vertical" && (
         <div className="absolute left-[2.19rem] top-4 bottom-4 w-[2px] -translate-x-1/2">
           <div className="absolute inset-0 bg-border/20 rounded-full" />
@@ -92,22 +92,19 @@ export function Timeline({
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                background:
-                  "linear-gradient(to bottom, #ff0080, #ff00ff, #8b5cf6, #3b82f6, #06b6d4, #10b981, #eab308, #ef4444)",
+                background: TIMELINE_RAINBOW_GRADIENT,
               }}
             />
             <div
               className="absolute inset-0 rounded-full blur-[6px] opacity-70"
               style={{
-                background:
-                  "linear-gradient(to bottom, #ff0080, #ff00ff, #8b5cf6, #3b82f6, #06b6d4, #10b981, #eab308, #ef4444)",
+                background: TIMELINE_RAINBOW_GRADIENT,
               }}
             />
             <div
               className="absolute inset-0 rounded-full blur-[12px] opacity-40"
               style={{
-                background:
-                  "linear-gradient(to bottom, #ff0080, #ff00ff, #8b5cf6, #3b82f6, #06b6d4, #10b981, #eab308, #ef4444)",
+                background: TIMELINE_RAINBOW_GRADIENT,
               }}
             />
           </motion.div>

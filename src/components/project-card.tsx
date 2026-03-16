@@ -1,16 +1,16 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { ArrowUpRight, FolderOpen, Play } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import Markdown from "react-markdown";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight, FolderOpen, Play } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import Markdown from "react-markdown";
-import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "motion/react";
 
 const VideoPlayer = dynamic(() => import("@/components/ui/video-player"), {
   ssr: false,
@@ -100,11 +100,13 @@ interface Props {
 
 function LazyVideo({
   src,
+  title,
   videoLoaded,
   onPlaying,
   onClick,
 }: {
   src: string;
+  title: string;
   videoLoaded: boolean;
   onPlaying: () => void;
   onClick: () => void;
@@ -131,7 +133,15 @@ function LazyVideo({
   }, [inView]);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div
+      ref={containerRef}
+      role="button"
+      tabIndex={0}
+      aria-label={`Play ${title} demo video`}
+      className="relative group/video cursor-pointer"
+      onClick={onClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } }}
+    >
       {!videoLoaded && <MediaSkeleton />}
       {inView && (
         <video
@@ -142,22 +152,20 @@ function LazyVideo({
           playsInline
           preload="none"
           className={cn(
-            "w-full aspect-video object-cover cursor-pointer transition-opacity duration-300",
+            "w-full aspect-video object-cover transition-opacity duration-300",
             videoLoaded ? "opacity-100" : "opacity-0"
           )}
           onPlaying={onPlaying}
-          onClick={onClick}
         />
       )}
       {!inView && <div className="w-full aspect-video" />}
       {videoLoaded && (
-        <button
-          onClick={onClick}
-          className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg bg-black/70 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white hover:bg-black/90 transition-colors"
-        >
-          <Play className="size-3 fill-current" />
-          Watch Demo
-        </button>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover/video:bg-black/30 transition-colors duration-300">
+          <div className="flex items-center gap-2 rounded-full bg-white/90 dark:bg-white/95 px-5 py-2.5 shadow-lg opacity-0 scale-90 group-hover/video:opacity-100 group-hover/video:scale-100 transition-[opacity,transform] duration-300">
+            <Play className="size-4 fill-black text-black" />
+            <span className="text-sm font-semibold text-black">Watch Demo</span>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -177,6 +185,7 @@ export function ProjectCard({
   const [showPlayer, setShowPlayer] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -186,7 +195,7 @@ export function ProjectCard({
     <>
     <div
       className={cn(
-        "flex flex-col h-full border border-border rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-cyan-500/5 dark:hover:shadow-cyan-400/10 transition-shadow duration-300",
+        "flex flex-col h-full border border-border rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:shadow-cyan-500/10 dark:hover:shadow-cyan-400/10 transition-shadow duration-300",
         className
       )}
     >
@@ -194,6 +203,7 @@ export function ProjectCard({
         {video ? (
           <LazyVideo
             src={video}
+            title={title}
             videoLoaded={videoLoaded}
             onPlaying={() => setVideoLoaded(true)}
             onClick={() => setShowPlayer(true)}
@@ -273,7 +283,13 @@ export function ProjectCard({
                       +{tags.length - MAX_VISIBLE_TAGS}
                     </Badge>
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-[200px] bg-popover text-popover-foreground border border-border shadow-lg" sideOffset={8}>
+                  <TooltipContent
+                    side="top"
+                    align="end"
+                    sideOffset={8}
+                    collisionPadding={16}
+                    className="max-w-[180px] bg-popover text-popover-foreground border border-border shadow-lg text-xs leading-relaxed z-50"
+                  >
                     <p>{tags.slice(MAX_VISIBLE_TAGS).join(", ")}</p>
                   </TooltipContent>
                 </Tooltip>
@@ -288,6 +304,7 @@ export function ProjectCard({
       <AnimatePresence>
         {showPlayer && video && (
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label={`${title} demo video`}
@@ -298,7 +315,7 @@ export function ProjectCard({
             onClick={() => setShowPlayer(false)}
             onKeyDown={(e) => { if (e.key === "Escape") setShowPlayer(false); }}
             tabIndex={-1}
-            ref={(el) => el?.focus()}
+            onAnimationComplete={() => dialogRef.current?.focus()}
           >
             <motion.div
               className="w-[90vw] max-w-4xl rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10"

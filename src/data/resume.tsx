@@ -1,5 +1,5 @@
 import { Icons } from "@/components/icons";
-import { HomeIcon } from "lucide-react";
+import { HomeIcon, CircleUser, CodeXml, Wrench, MessageSquare } from "lucide-react";
 import { Html5 } from "@/components/ui/svgs/html5";
 import { Javascript } from "@/components/ui/svgs/javascript";
 import { ReactLight } from "@/components/ui/svgs/reactLight";
@@ -34,9 +34,9 @@ export const DATA = {
   location: "Manolo Fortich, Bukidnon",
   locationLink: "https://www.google.com/maps/place/Manolo+Fortich,+Bukidnon",
   description:
-    "I build WordPress sites that load fast and convert, then automate the workflows behind them — saving businesses 50+ hours a month.",
+    "I build high-performing websites and automate the systems behind them — helping businesses save 50+ hours every month.",
   summary:
-    "With 8+ years in web development and automation, I specialize in building custom [WordPress](https://wordpress.org) solutions and streamlining business workflows that save clients real time and money. I've partnered with companies like [DrTalks](https://drtalks.com) and [BoxOut Marketing](https://boxoutmarketing.com), delivering everything from CRM integrations to full marketing automation systems. Based in the Philippines, I work with clients worldwide.",
+    "With over 8+ years of experience in web development and automation, I build fast, scalable, and visually engaging digital experiences.\n\nI specialize in modern web development, CRM integrations, and workflow automation, helping businesses streamline operations and eliminate repetitive tasks.\n\nI've worked with companies such as [DrTalks](https://drtalks.com) and [BoxOut Marketing](https://boxoutmarketing.com), delivering solutions ranging from custom websites and system integrations to full marketing automation workflows.\n\nBased in the Philippines, I work with clients worldwide — building systems that save teams 50+ hours every month and help businesses operate more efficiently.",
   avatarUrl: "/me.png",
   skills: [
     { name: "HTML/CSS", icon: Html5 },
@@ -67,7 +67,11 @@ export const DATA = {
     { name: "Claude AI", icon: ClaudeAI },
   ],
   navbar: [
-    { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "#hero", icon: HomeIcon, label: "Home" },
+    { href: "#about", icon: CircleUser, label: "About" },
+    { href: "#projects", icon: CodeXml, label: "Projects" },
+    { href: "#services", icon: Wrench, label: "Services" },
+    { href: "#contact", icon: MessageSquare, label: "Contact" },
   ],
   contact: {
     email: "emmanueljumelgallardo@gmail.com",
@@ -89,7 +93,7 @@ export const DATA = {
         name: "Contact",
         url: "#contact",
         icon: Icons.email,
-        navbar: true,
+        navbar: false,
       },
     },
   },
@@ -100,16 +104,16 @@ export const DATA = {
       href: "#",
       badges: [],
       location: "Remote",
-      title: "WordPress Developer & Automation Specialist",
+      title: "Web Developer & Automation Specialist",
       logoUrl: "/logos/freelance.svg",
       start: "Jan 2026",
       end: "Present",
       description:
         "Building custom WordPress sites, WooCommerce stores, and automating business processes using Make.com, n8n, and Zapier. Integrating CRMs like GoHighLevel and Keap for client businesses.",
       highlights: [
-        "Built custom WordPress and Next.js sites for clients worldwide",
-        "Automated workflows saving clients 50+ hours per month",
-        "Integrated CRM systems for seamless lead management",
+        "Built high-performance websites using WordPress, Next.js, and modern web technologies",
+        "Designed automation systems that save clients 50+ hours of manual work each month",
+        "Integrated CRMs and business tools to streamline lead management and operations",
       ],
     },
     {
@@ -200,7 +204,7 @@ export const DATA = {
       dates: "2026",
       active: true,
       description:
-        "A modern, clean, and professional dental clinic website — featuring a polished UI with smooth animations, responsive design, and an intuitive patient-first experience.",
+        "A professional dental clinic website with smooth animations, responsive design, and a patient-first experience.",
       technologies: [
         "Next.js",
         "React",
@@ -224,7 +228,7 @@ export const DATA = {
       dates: "2025",
       active: true,
       description:
-        "A modern single-product store page with a hero carousel, smooth scroll animations, and a clean conversion-focused layout — built with zero frameworks and no build step.",
+        "A single-product store with hero carousel, scroll animations, and a conversion-focused layout — built with zero frameworks.",
       technologies: [
         "HTML",
         "Tailwind CSS",
@@ -247,7 +251,7 @@ export const DATA = {
       dates: "2025",
       active: true,
       description:
-        "A custom fulfillment webapp for PEMF therapy products — syncing orders from WooCommerce, tracking shipments on interactive maps, and providing real-time analytics with role-based access control.",
+        "A fulfillment webapp syncing WooCommerce orders, tracking shipments on interactive maps, and providing real-time analytics with role-based access.",
       technologies: [
         "Next.js",
         "React",
@@ -274,7 +278,7 @@ export const DATA = {
       dates: "2025",
       active: true,
       description:
-        "A scheduling app for congregation meetings — automating assignments, managing participants, and generating weekly schedules with a clean, intuitive interface.",
+        "A scheduling app that automates meeting assignments, manages participants, and generates weekly schedules with an intuitive interface.",
       technologies: [
         "Next.js",
         "React",

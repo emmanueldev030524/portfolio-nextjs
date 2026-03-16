@@ -3,6 +3,7 @@
 import { RefObject, useEffect, useId, useRef, useState } from "react"
 import { motion, useInView } from "motion/react"
 
+import { COLORS } from "@/constants/colors"
 import { cn } from "@/lib/utils"
 
 export interface AnimatedBeamProps {
@@ -31,14 +32,14 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   fromRef,
   toRef,
   curvature = 0,
-  reverse = false, // Include the reverse prop
+  reverse = false,
   duration = 5.5,
   delay = 0,
   pathColor = "gray",
   pathWidth = 2,
   pathOpacity = 0.2,
-  gradientStartColor = "#ffaa40",
-  gradientStopColor = "#9c40ff",
+  gradientStartColor = COLORS.cyan[500],
+  gradientStopColor = COLORS.cyan[400],
   startXOffset = 0,
   startYOffset = 0,
   endXOffset = 0,
@@ -50,7 +51,6 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   const [pathD, setPathD] = useState("")
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 })
 
-  // Calculate the gradient coordinates based on the reverse prop
   const gradientCoordinates = reverse
     ? {
         x1: ["90%", "-10%"],
@@ -93,20 +93,16 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
       }
     }
 
-    // Initialize ResizeObserver
     const resizeObserver = new ResizeObserver(() => {
       updatePath()
     })
 
-    // Observe the container element
     if (containerRef.current) {
       resizeObserver.observe(containerRef.current)
     }
 
-    // Call the updatePath initially to set the initial path
     updatePath()
 
-    // Clean up the observer on component unmount
     return () => {
       resizeObserver.disconnect()
     }

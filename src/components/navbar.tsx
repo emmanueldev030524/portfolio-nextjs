@@ -13,28 +13,53 @@ import {
 } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { ArrowUp } from "lucide-react";
+import { useActiveSection } from "@/hooks/use-active-section";
 
 const SCROLL_THRESHOLD = 300;
 
 const DOCK_ICON_CLASS =
   "rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors";
 
+const DOCK_ICON_ACTIVE_CLASS =
+  "rounded-3xl cursor-pointer size-full bg-cyan-500/15 p-0 text-cyan-500 dark:text-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-300 hover:bg-cyan-500/20 backdrop-blur-3xl border border-cyan-500/30 transition-colors";
+
 const TOOLTIP_CONTENT_CLASS =
   "rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]";
+
+function sectionFromHref(href: string): string | null {
+  if (href.startsWith("#")) return href.slice(1);
+  if (href === "/") return "hero";
+  return null;
+}
 
 export default function Navbar() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { scrollY } = useScroll();
+  const activeSection = useActiveSection();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setShowScrollTop(latest > SCROLL_THRESHOLD);
   });
 
+  function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    const section = sectionFromHref(href);
+    if (!section) return;
+    e.preventDefault();
+    document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function isActive(href: string): boolean {
+    const section = sectionFromHref(href);
+    if (!section) return false;
+    return activeSection === section;
+  }
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
-      <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+      <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-black/[0.08] dark:shadow-primary/5">
         {DATA.navbar.map((item) => {
           const isExternal = item.href.startsWith("http");
+          const active = isActive(item.href);
           return (
             <Tooltip key={item.href}>
               <TooltipTrigger asChild>
@@ -42,8 +67,9 @@ export default function Navbar() {
                   href={item.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
+                  onClick={!isExternal ? (e) => handleAnchorClick(e, item.href) : undefined}
                 >
-                  <DockIcon className={DOCK_ICON_CLASS}>
+                  <DockIcon className={active ? DOCK_ICON_ACTIVE_CLASS : DOCK_ICON_CLASS}>
                     <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
                   </DockIcon>
                 </a>
@@ -67,7 +93,6 @@ export default function Navbar() {
           .filter(([_, social]) => social.navbar)
           .map(([name, social], index) => {
             const isExternal = social.url.startsWith("http");
-            const isAnchor = social.url.startsWith("#");
             const IconComponent = social.icon;
             return (
               <Tooltip key={`social-${name}-${index}`}>
@@ -76,10 +101,7 @@ export default function Navbar() {
                     href={social.url}
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
-                    onClick={isAnchor ? (e) => {
-                      e.preventDefault();
-                      document.querySelector(social.url)?.scrollIntoView({ behavior: "smooth" });
-                    } : undefined}
+                    onClick={!isExternal && social.url.startsWith("#") ? (e) => handleAnchorClick(e, social.url) : undefined}
                   >
                     <DockIcon className={DOCK_ICON_CLASS}>
                       <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />

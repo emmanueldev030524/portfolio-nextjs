@@ -26,13 +26,15 @@ export function CountUp({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const prefersReducedMotion = useReducedMotion();
-  const [displayValue, setDisplayValue] = useState(
-    prefersReducedMotion ? target : 0
-  );
+  const [displayValue, setDisplayValue] = useState(target);
+  const hasAnimated = useRef(false);
   const motionValue = useMotionValue(0);
 
   useEffect(() => {
-    if (!isInView || prefersReducedMotion) return;
+    if (!isInView || prefersReducedMotion || hasAnimated.current) return;
+    hasAnimated.current = true;
+
+    setDisplayValue(0);
 
     const unsubscribe = motionValue.on("change", (v) => {
       setDisplayValue(Math.round(v));

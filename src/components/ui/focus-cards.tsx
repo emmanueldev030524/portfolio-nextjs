@@ -46,7 +46,7 @@ function Card({
     >
       <div
         className={cn(
-          "absolute inset-0 opacity-0 transition-opacity duration-300 bg-gradient-to-br from-cyan-500/15 via-transparent to-white/10",
+          "absolute inset-0 opacity-0 transition-opacity duration-300 bg-gradient-to-br from-cyan-500/15 via-transparent to-cyan-500/5 dark:to-white/10",
           hovered === index && "opacity-100"
         )}
       />
@@ -61,8 +61,8 @@ function Card({
         {card.description}
       </p>
       <span className={cn(
-        "relative z-10 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground/60 transition-colors duration-300 mt-auto",
-        hovered === index && "text-foreground"
+        "relative z-10 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground/50 transition-[color,gap] duration-300 mt-auto",
+        hovered === index && "text-cyan-500 dark:text-cyan-400 gap-2.5"
       )}>
         Get Started <ArrowRight className="size-3" />
       </span>
