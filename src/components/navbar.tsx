@@ -55,8 +55,8 @@ export default function Navbar() {
   }
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
-      <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-black/[0.08] dark:shadow-primary/5">
+    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30 px-3 sm:px-0">
+      <Dock className="z-50 pointer-events-auto relative h-10 sm:h-14 p-1 sm:p-2 max-w-[calc(100vw-1.5rem)] sm:max-w-none w-fit mx-auto flex gap-0.5 sm:gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-black/[0.08] dark:shadow-primary/5">
         {DATA.navbar.map((item) => {
           const isExternal = item.href.startsWith("http");
           const active = isActive(item.href);
@@ -87,7 +87,7 @@ export default function Navbar() {
         })}
         <Separator
           orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
+          className="h-2/3 m-auto w-px bg-border hidden sm:block"
         />
         {Object.entries(DATA.contact.social)
           .filter(([_, social]) => social.navbar)
@@ -121,7 +121,7 @@ export default function Navbar() {
           })}
         <Separator
           orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
+          className="h-2/3 m-auto w-px bg-border hidden sm:block"
         />
         <Tooltip>
           <TooltipTrigger asChild>
